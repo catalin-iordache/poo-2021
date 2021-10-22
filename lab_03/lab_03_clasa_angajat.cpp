@@ -3,9 +3,9 @@ using namespace std;
 
 class Angajat {
 private:
-    char* nume;
+    char* nume = nullptr;
     char identificator[10];
-    int* vanzari_lunare;
+    int* vanzari_lunare = nullptr;
     int numar_luni;
 
     const int id;
@@ -29,8 +29,11 @@ public:
     Angajat(const char* nume, const char* identificator, int* vanzari_lunare, int numar_luni, int id)
         : id(id)
     {
-        this->nume = new char[strlen(nume) + 1];
-        strcpy(this->nume, nume);
+        if(nume != nullptr)
+        {
+            this->nume = new char[strlen(nume) + 1];
+            strcpy(this->nume, nume);
+        }
         strcpy(this->identificator, identificator);
         this->numar_luni = numar_luni;
         if (numar_luni > 0) {
@@ -48,8 +51,11 @@ public:
     Angajat(const Angajat& copie)
         : id(copie.id + 1)
     {
-        this->nume = new char[strlen(copie.nume) + 1];
-        strcpy(this->nume, copie.nume);
+        if(copie.nume != nullptr) 
+        {
+            this->nume = new char[strlen(copie.nume) + 1];
+            strcpy(this->nume, copie.nume);
+        }
         strcpy(this->identificator, copie.identificator);
         this->numar_luni = copie.numar_luni;
         if (copie.numar_luni) {
@@ -57,8 +63,6 @@ public:
             for (int i = 0; i < copie.numar_luni; i++) {
                 this->vanzari_lunare[i] = copie.vanzari_lunare[i];
             }
-        } else {
-            this->vanzari_lunare = nullptr;
         }
         this->nr_total++;
     }
@@ -78,7 +82,14 @@ public:
 
     void afisare() const
     {
-        cout << "Nume: " << this->nume << ", identificator: " << this->identificator << ", id: " << this->id;
+        cout << "Nume: ";
+        if(this->nume != nullptr) 
+        {
+            cout << this->nume;
+        } else {
+            cout << "-";
+        }
+        cout << ", identificator: " << this->identificator << ", id: " << this->id;
         if (this->numar_luni > 0 && this->vanzari_lunare != nullptr) {
             cout << ", vanzari pe " << this->numar_luni << " luni: ";
             for (int i = 0; i < this->numar_luni; i++) {
@@ -103,8 +114,14 @@ public:
         if (this->nume != nullptr) {
             delete[] this->nume;
         }
-        this->nume = new char[strlen(numeNou) + 1];
-        strcpy(this->nume, numeNou);
+        if(numeNou != nullptr) 
+        {
+            this->nume = new char[strlen(numeNou) + 1];
+            strcpy(this->nume, numeNou);
+        } else {
+            this->nume = nullptr;
+        }
+      
     }
 };
 
